@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aliño y Sazón - Menú Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1546473138-164b711e51b6?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .cactus-icon {
+            display: inline-block;
+            width: 20px;
+            height: 30px;
+            background-color: #34D399; /* Green-400 */
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            position: relative;
+            transform: rotate(10deg);
+        }
+        .cactus-icon::before, .cactus-icon::after {
+            content: '';
+            position: absolute;
+            background-color: #34D399;
+            width: 10px;
+            height: 20px;
+            border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+            top: 5px;
+        }
+        .cactus-icon::before {
+            left: -8px;
+            transform: rotate(-30deg);
+        }
+        .cactus-icon::after {
+            right: -8px;
+            transform: rotate(30deg);
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 24px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #34D399; /* Green-400 */
+        }
+        input:focus + .slider {
+            box-shadow: 0 0 1px #34D399;
+        }
+        input:checked + .slider:before {
+            -webkit-transform: translateX(16px);
+            -ms-transform: translateX(16px);
+            transform: translateX(16px);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-orange-100 min-h-screen flex flex-col justify-center items-center p-4">
+    <div class="bg-red-900 bg-opacity-80 backdrop-blur-sm p-6 rounded-lg shadow-2xl max-w-4xl w-full">
+        <header class="text-center mb-8 relative">
+            <h1 class="text-5xl font-bold text-orange-200 mb-2 flex items-center justify-center">
+                <span class="cactus-icon mr-4"></span> Aliño y Sazón <span class="cactus-icon ml-4"></span>
+            </h1>
+            <p class="text-xl text-orange-300">Menú Digital</p>
+            <div id="adminLoginContainer" class="absolute top-0 right-0 p-2 text-sm text-orange-400 opacity-20 hover:opacity-100 cursor-pointer">
+                Admin
+            </div>
+            <div id="passwordPrompt" class="hidden mt-4 flex justify-center items-center">
+                <input type="password" id="adminPassword" placeholder="Contraseña" class="p-2 rounded bg-red-700 text-orange-100 border border-orange-500 focus:outline-none focus:ring-2 focus:ring-orange-500">
+                <button id="submitPasswordBtn" class="ml-2 px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300">Entrar</button>
+            </div>
+        </header>
+
+        <nav class="flex justify-center space-x-4 mb-8">
+            <button id="showCustomerBtn" class="px-6 py-3 bg-orange-600 hover:bg-orange-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300">Ver Menú</button>
+            <button id="showAdminBtn" class="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition-colors duration-300 hidden">Administrar Menú</button>
+        </nav>
+
+        <!-- Customer View -->
+        <div id="customerView" class="space-y-8">
+            <h2 class="text-3xl font-bold text-orange-200 text-center mb-6">Nuestro Menú del Día</h2>
+            
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Platos Corrientes -->
+                <div class="bg-red-800 p-5 rounded-lg shadow-xl border-t-4 border-orange-500">
+                    <h3 class="text-2xl font-semibold text-orange-200 mb-4">Platos Corrientes</h3>
+                    <div id="platosCorrientesList" class="space-y-3">
+                        <!-- Items will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Platos Especiales -->
+                <div class="bg-red-800 p-5 rounded-lg shadow-xl border-t-4 border-orange-500">
+                    <h3 class="text-2xl font-semibold text-orange-200 mb-4">Platos Especiales</h3>
+                    <div id="platosEspecialesList" class="space-y-3">
+                        <!-- Items will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Adicionales -->
+                <div class="bg-red-800 p-5 rounded-lg shadow-xl border-t-4 border-orange-500">
+                    <h3 class="text-2xl font-semibold text-orange-200 mb-4">Adicionales</h3>
+                    <div id="adicionalesList" class="space-y-3">
+                        <!-- Items will be injected here -->
+                    </div>
+                </div>
+
+                <!-- Bebidas -->
+                <div class="bg-red-800 p-5 rounded-lg shadow-xl border-t-4 border-orange-500">
+                    <h3 class="text-2xl font-semibold text-orange-200 mb-4">Bebidas</h3>
+                    <div id="bebidasList" class="space-y-3">
+                        <!-- Items will be injected here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin View -->
+        <div id="adminView" class="hidden space-y-8">
+            <h2 class="text-3xl font-bold text-orange-200 text-center mb-6">Administrar Menú</h2>
+
+            <!-- Daily Selections for Principios and Sopas -->
+            <div class="bg-red-800 p-5 rounded-lg shadow-xl border-t-4 border-green-500">
+                <h3 class="text-2xl font-semibold text-green-200 mb-4">Selección Diaria</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-xl font-semibold text-green-300 mb-3">Principios del Día (Selecciona hasta 2)</h4>
+                        <div id="adminPrincipiosSelection" class="space-y-2">
+                            <!-- Principios checkboxes -->
+                        </div>
+                    </div>
+                    <div>
+                        <h4 class="text-xl font-semibold text-green-300 mb-3">Sopa del Día (Selecciona 1)</h4>
+                        <div id="adminSopasSelection" class="space-y-2">
+                            <!-- Sopas radio buttons -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Menu Items for Activation/Deactivation -->
+            <div class="bg-red-800 p-5 rounded-lg shadow-xl border-t-4 border-green-500">
+                <h3 class="text-2xl font-semibold text-green-200 mb-4">Activar/Desactivar Productos</h3>
+                <div id="adminAllItemsList" class="space-y-4">
+                    <!-- All items with toggles -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const rawMenuItemsData = [
+            { name: "Pollo salsa Champiñon", price: 23000, category: "especiales del dia" },
+            { name: "Robalo en salsa", price: 25000, category: "especiales del dia" },
+            { name: "Ensalada Rusa", price: 21000, category: "especiales del dia" },
+            { name: "Ajiaco Santafereño", price: 21000, category: "especiales del dia" },
+            { name: "Bandeja paisa", price: 28000, category: "especiales del dia" },
+            { name: "Sancocho de Costilla", price: 29000, category: "especiales del dia" },
+            { name: "Garbanzo", price: 0, category: "principio" },
+            { name: "Lentejas", price: 0, category: "principio" },
+            { name: "Arveja", price: 0, category: "principio" },
+            { name: "Macarrón", price: 0, category: "principio" },
+            { name: "Frijol Rojo", price: 0, category: "principio" },
+            { name: "Frijol Blanco", price: 0, category: "principio" },
+            { name: "Habichuela", price: 0, category: "principio" },
+            { name: "Ensalada deTornillos", price: 0, category: "principio" },
+            { name: "Calabacin", price: 0, category: "principio" },
+            { name: "Arroz Mixto", price: 0, category: "principio" },
+            { name: "Acelgas", price: 0, category: "principio" },
+            { name: "Yota", price: 0, category: "principio" },
+            { name: "Chop Suey", price: 0, category: "principio" },
+            { name: "Ahuyama", price: 0, category: "principio" },
+            { name: "Berenjena", price: 0, category: "principio" },
+            { name: "Spaguetti", price: 0, category: "principio" },
+            { name: "Avena", price: 0, category: "sopas" },
+            { name: "Patacón", price: 0, category: "sopas" },
+            { name: "Crema de Ahuyama", price: 0, category: "sopas" },
+            { name: "Ruyas", price: 0, category: "sopas" },
+            { name: "Cuchuco de Maíz", price: 0, category: "sopas" },
+            { name: "Verduras", price: 0, category: "sopas" },
+            { name: "Crema de Cebolla", price: 0, category: "sopas" },
+            { name: "Pastas", price: 0, category: "sopas" },
+            { name: "Arroz", price: 0, category: "sopas" },
+            { name: "Cuchuco de Cebada", price: 0, category: "sopas" },
+            { name: "Apio", price: 0, category: "sopas" },
+            { name: "Arveja", price: 0, category: "sopas" },
+            { name: "Mini Paisa", price: 20000, category: "corrientes" },
+            { name: "Albondigas", price: 16000, category: "corrientes" },
+            { name: "Carne Asada", price: 16000, category: "corrientes" },
+            { name: "Carne Sudada", price: 16000, category: "corrientes" },
+            { name: "Carne Bistec", price: 16000, category: "corrientes" },
+            { name: "Carne Gulahs", price: 16000, category: "corrientes" },
+            { name: "Carne Hamburguesa", price: 16000, category: "corrientes" },
+            { name: "Carne Desmechada", price: 16000, category: "corrientes" },
+            { name: "Pollo Sudado", price: 16000, category: "corrientes" },
+            { name: "Pollo Milanesa", price: 16000, category: "corrientes" },
+            { name: "Pollo Frito o Asado", price: 16000, category: "corrientes" },
+            { name: "Pechuda Asada o Agridulce", price: 16000, category: "corrientes" },
+            { name: "Higado Asado o Bistec", price: 16000, category: "corrientes" },
+            { name: "Lomo de Cerdo Asado o Agridulce", price: 16000, category: "corrientes" },
+            { name: "Trucha", price: 19000, category: "corrientes" },
+            { name: "Mojarra Frita", price: 19000, category: "corrientes" },
+            { name: "Bocachico Frito", price: 19000, category: "corrientes" },
+            { name: "Filete Robalo", price: 21000, category: "corrientes" },
+            { name: "Churrasco", price: 38000, category: "especiales" },
+            { name: "Bandeja Paisa", price: 28000, category: "especiales" },
+            { name: "Super Robalo", price: 40000, category: "especiales" },
+            { name: "Carne Oreada", price: 38000, category: "especiales" },
+            { name: "Picada Especial", price: 86000, category: "especiales" },
+            { name: "Arroz con Pollo Grande", price: 21000, category: "especiales" },
+            { name: "Arroz con Pollo Pequeño", price: 15000, category: "especiales" },
+            { name: "Bandeja de Carnes", price: 58000, category: "especiales" },
+            { name: "Cabro con Pepitoria", price: 38000, category: "especiales" },
+            { name: "Mojarra Frita Especial", price: 38000, category: "especiales" },
+            { name: "Lomo de Cerdo Hawaiano", price: 40000, category: "especiales" },
+            { name: "Lomo de Cerdo BBQ/Salsa Ciruela", price: 38000, category: "especiales" },
+            { name: "Pechuga Hawaiana", price: 40000, category: "especiales" },
+            { name: "Pechuga BBQ/Salsa Ciruela", price: 38000, category: "especiales" },
+            { name: "Trucha frita o Al ajillo", price: 38000, category: "especiales" },
+            { name: "Carne Especial", price: 21000, category: "especiales" },
+            { name: "Pollo Especial", price: 21000, category: "especiales" },
+            { name: "Lomo Especial", price: 21000, category: "especiales" },
+            { name: "Spaguetti Grande", price: 21000, category: "especiales" },
+            { name: "Spaguetti Pequeño", price: 15000, category: "especiales" },
+            { name: "Costillas de Cerdo", price: 24000, category: "especiales" },
+            { name: "Sobrebarriga", price: 38000, category: "especiales" },
+            { name: "Cazuela Mixta", price: 38000, category: "especiales" },
+            { name: "Arroz con Camaron", price: 30000, category: "especiales" },
+            { name: "Spaguetti Con Camaron", price: 30000, category: "especiales" },
+            { name: "Sombrero Mexicano (frijolada)", price: 20000, category: "especiales" },
+            { name: "Mute", price: 23000, category: "especiales" },
+            { name: "Porcion de Papa Francesa", price: 13000, category: "adicionales" },
+            { name: "Media Porción de Papa Francesa", price: 8000, category: "adicionales" },
+            { name: "Porción de Arroz", price: 4000, category: "adicionales" },
+            { name: "Porción de Principio", price: 4000, category: "adicionales" },
+            { name: "Porción de Ensalada", price: 4000, category: "adicionales" },
+            { name: "Porción de Agucate", price: 4000, category: "adicionales" },
+            { name: "Porción de Chicharron", price: 6000, category: "adicionales" },
+            { name: "Porción de Frita", price: 2000, category: "adicionales" },
+            { name: "Porción de Maduro", price: 4000, category: "adicionales" },
+            { name: "Porción de Patacón", price: 5000, category: "adicionales" },
+            { name: "Porción de Pepitoria", price: 11000, category: "adicionales" },
+            { name: "Porción de Pescado", price: 11000, category: "adicionales" },
+            { name: "Porción Proteína", price: 8000, category: "adicionales" },
+            { name: "Porción Proteína 150gr", price: 13000, category: "adicionales" },
+            { name: "Porción Proteína 300gr", price: 21000, category: "adicionales" },
+            { name: "Porción Yuca", price: 4000, category: "adicionales" },
+            { name: "Jugo Adicional", price: 2500, category: "bebidas" },
+            { name: "Agua Grande", price: 4000, category: "bebidas" },
+            { name: "Agua Pequeña", price: 3000, category: "bebidas" },
+            { name: "Gaseosa Litro", price: 7000, category: "bebidas" },
+            { name: "Gaseosa 1.5L", price: 9500, category: "bebidas" },
+            { name: "Gaseosa 350ml", price: 4500, category: "bebidas" },
+            { name: "Gaseosa PET400", price: 5500, category: "bebidas" },
+            { name: "Jugo Hit 350ml", price: 4500, category: "bebidas" }
+        ];
+
+        let menuItems = [];
+        let dailySelections = {
+            principios: [],
+            sopa: null
+        };
+
+        function initializeMenu() {
+            menuItems = rawMenuItemsData.map((item, index) => ({
+                ...item,
+                id: `item-${index}`,
+                isActive: true
+            }));
+
+            const savedMenuItems = localStorage.getItem('menuItems');
+            const savedDailySelections = localStorage.getItem('dailySelections');
+
+            if (savedMenuItems) {
+                const parsedSavedMenuItems = JSON.parse(savedMenuItems);
+                menuItems = menuItems.map(item => {
+                    const savedItem = parsedSavedMenuItems.find(sItem => sItem.id === item.id);
+                    return savedItem ? { ...item, isActive: savedItem.isActive } : item;
+                });
+            }
+
+            if (savedDailySelections) {
+                dailySelections = JSON.parse(savedDailySelections);
+            }
+        }
+
+        function saveState() {
+            localStorage.setItem('menuItems', JSON.stringify(menuItems));
+            localStorage.setItem('dailySelections', JSON.stringify(dailySelections));
+        }
+
+        const formatter = new Intl.NumberFormat('es-CO', {
+            style: 'currency',
+            currency: 'COP',
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+
+        function formatPrice(price) {
+            return price === 0 ? '' : formatter.format(price);
+        }
+
+        function renderCustomerMenu() {
+            const platosCorrientesList = document.getElementById('platosCorrientesList');
+            const platosEspecialesList = document.getElementById('platosEspecialesList');
+            const adicionalesList = document.getElementById('adicionalesList');
+            const bebidasList = document.getElementById('bebidasList');
+
+            platosCorrientesList.innerHTML = '';
+            platosEspecialesList.innerHTML = '';
+            adicionalesList.innerHTML = '';
+            bebidasList.innerHTML = '';
+
+            const activeItems = menuItems.filter(item => item.isActive);
+
+            // Platos Corrientes: Principios, Sopa, Corrientes
+            const dailyPrincipios = activeItems.filter(item => dailySelections.principios.includes(item.id));
+            const dailySopa = activeItems.find(item => item.id === dailySelections.sopa);
+            const corrientesItems = activeItems.filter(item => item.category === 'corrientes');
+
+            if (dailyPrincipios.length > 0) {
+                platosCorrientesList.innerHTML += `<p class="text-orange-300 font-semibold mb-2">Principios:</p>`;
+                dailyPrincipios.forEach(item => {
+                    platosCorrientesList.innerHTML += `<div class="flex justify-between items-center text-lg"><span>${item.name}</span><span class="text-orange-400">${formatPrice(item.price)}</span></div>`;
+                });
+            } else {
+                platosCorrientesList.innerHTML += `<p class="text-orange-400">No hay principios seleccionados para hoy.</p>`;
+            }
+
+            if (dailySopa) {
+                platosCorrientesList.innerHTML += `<p class="text-orange-300 font-semibold mt-4 mb-2">Sopa:</p>`;
+                platosCorrientesList.innerHTML += `<div class="flex justify-between items-center text-lg"><span>${dailySopa.name}</span><span class="text-orange-400">${formatPrice(dailySopa.price)}</span></div>`;
+            } else {
+                platosCorrientesList.innerHTML += `<p class="text-orange-400">No hay sopa seleccionada para hoy.</p>`;
+            }
+            
+            if (corrientesItems.length > 0) {
+                platosCorrientesList.innerHTML += `<p class="text-orange-300 font-semibold mt-4 mb-2">Platos Principales:</p>`;
+                corrientesItems.forEach(item => {
+                    platosCorrientesList.innerHTML += `<div class="flex justify-between items-center text-lg"><span>${item.name}</span><span class="text-orange-400">${formatPrice(item.price)}</span></div>`;
+                });
+            } else {
+                platosCorrientesList.innerHTML += `<p class="text-orange-400">No hay platos corrientes activos.</p>`;
+            }
+
+            // Platos Especiales: especiales del dia + especiales
+            const especialesItems = activeItems.filter(item => 
+                item.category === 'especiales del dia' || item.category === 'especiales'
+            );
+            if (especialesItems.length > 0) {
+                especialesItems.forEach(item => {
+                    platosEspecialesList.innerHTML += `<div class="flex justify-between items-center text-lg"><span>${item.name}</span><span class="text-orange-400">${formatPrice(item.price)}</span></div>`;
+                });
+            } else {
+                platosEspecialesList.innerHTML += `<p class="text-orange-400">No hay platos especiales activos.</p>`;
+            }
+
+            // Adicionales
+            const adicionalesItems = activeItems.filter(item => item.category === 'adicionales');
+            if (adicionalesItems.length > 0) {
+                adicionalesItems.forEach(item => {
+                    adicionalesList.innerHTML += `<div class="flex justify-between items-center text-lg"><span>${item.name}</span><span class="text-orange-400">${formatPrice(item.price)}</span></div>`;
+                });
+            } else {
+                adicionalesList.innerHTML += `<p class="text-orange-400">No hay adicionales activos.</p>`;
+            }
+
+            // Bebidas
+            const bebidasItems = activeItems.filter(item => item.category === 'bebidas');
+            if (bebidasItems.length > 0) {
+                bebidasItems.forEach(item => {
+                    bebidasList.innerHTML += `<div class="flex justify-between items-center text-lg"><span>${item.name}</span><span class="text-orange-400">${formatPrice(item.price)}</span></div>`;
+                });
+            } else {
+                bebidasList.innerHTML += `<p class="text-orange-400">No hay bebidas activas.</p>`;
+            }
+        }
+
+        function renderAdminPanel() {
+            const adminPrincipiosSelection = document.getElementById('adminPrincipiosSelection');
+            const adminSopasSelection = document.getElementById('adminSopasSelection');
+            const adminAllItemsList = document.getElementById('adminAllItemsList');
+
+            adminPrincipiosSelection.innerHTML = '';
+            adminSopasSelection.innerHTML = '';
+            adminAllItemsList.innerHTML = '';
+
+            // Render Principios selection
+            const principios = menuItems.filter(item => item.category === 'principio');
+            principios.forEach(item => {
+                const isChecked = dailySelections.principios.includes(item.id);
+                adminPrincipiosSelection.innerHTML += `
+                    <label class="flex items-center cursor-pointer">
+                        <input type="checkbox" data-item-id="${item.id}" class="form-checkbox h-5 w-5 text-green-600 bg-red-700 border-red-500 rounded focus:ring-green-500" ${isChecked ? 'checked' : ''} onchange="handlePrincipioSelection(this)">
+                        <span class="ml-2 text-green-100">${item.name}</span>
+                    </label>
+                `;
+            });
+
+            // Render Sopas selection
+            const sopas = menuItems.filter(item => item.category === 'sopas');
+            sopas.forEach(item => {
+                const isChecked = dailySelections.sopa === item.id;
+                adminSopasSelection.innerHTML += `
+                    <label class="flex items-center cursor-pointer">
+                        <input type="radio" name="dailySopa" data-item-id="${item.id}" class="form-radio h-5 w-5 text-green-600 bg-red-700 border-red-500 focus:ring-green-500" ${isChecked ? 'checked' : ''} onchange="handleSopaSelection(this)">
+                        <span class="ml-2 text-green-100">${item.name}</span>
+                    </label>
+                `;
+            });
+
+            // Render all items with active/deactive toggles, grouped by original category
+            const categories = [...new Set(menuItems.map(item => item.category))];
+            categories.forEach(category => {
+                const categoryItems = menuItems.filter(item => item.category === category);
+                adminAllItemsList.innerHTML += `<h4 class="text-xl font-semibold text-green-300 mt-6 mb-3">${category.charAt(0).toUpperCase() + category.slice(1)}</h4>`;
+                categoryItems.forEach(item => {
+                    adminAllItemsList.innerHTML += `
+                        <div class="flex justify-between items-center p-2 bg-red-700 rounded-md">
+                            <span class="text-green-100">${item.name} <span class="text-green-300 text-sm">(${formatPrice(item.price)})</span></span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" data-item-id="${item.id}" ${item.isActive ? 'checked' : ''} onchange="toggleItemActive(this)">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                    `;
+                });
+            });
+        }
+
+        function handlePrincipioSelection(checkbox) {
+            const itemId = checkbox.dataset.itemId;
+            if (checkbox.checked) {
+                if (dailySelections.principios.length < 2) {
+                    dailySelections.principios.push(itemId);
+                } else {
+                    checkbox.checked = false; 
+                    alert('Solo puedes seleccionar hasta 2 principios.');
+                }
+            } else {
+                dailySelections.principios = dailySelections.principios.filter(id => id !== itemId);
+            }
+            saveState();
+            renderCustomerMenu();
+        }
+
+        function handleSopaSelection(radio) {
+            const itemId = radio.dataset.itemId;
+            if (radio.checked) {
+                dailySelections.sopa = itemId;
+            } else {
+                dailySelections.sopa = null; 
+            }
+            saveState();
+            renderCustomerMenu();
+        }
+
+        function toggleItemActive(checkbox) {
+            const itemId = checkbox.dataset.itemId;
+            const item = menuItems.find(i => i.id === itemId);
+            if (item) {
+                item.isActive = checkbox.checked;
+                saveState();
+                renderCustomerMenu();
+            }
+        }
+
+        function showView(viewId) {
+            document.getElementById('customerView').classList.add('hidden');
+            document.getElementById('adminView').classList.add('hidden');
+            document.getElementById(viewId).classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeMenu();
+            renderCustomerMenu();
+            renderAdminPanel();
+            showView('customerView');
+
+            const showCustomerBtn = document.getElementById('showCustomerBtn');
+            const showAdminBtn = document.getElementById('showAdminBtn');
+            const adminLoginContainer = document.getElementById('adminLoginContainer');
+            const passwordPrompt = document.getElementById('passwordPrompt');
+            const adminPasswordInput = document.getElementById('adminPassword');
+            const submitPasswordBtn = document.getElementById('submitPasswordBtn');
+
+            const ADMIN_PASSWORD = 'fabniño'; // Contraseña simple para el acceso de administrador
+
+            showCustomerBtn.addEventListener('click', () => showView('customerView'));
+            showAdminBtn.addEventListener('click', () => showView('adminView'));
+
+            adminLoginContainer.addEventListener('click', () => {
+                passwordPrompt.classList.toggle('hidden');
+                if (!passwordPrompt.classList.contains('hidden')) {
+                    adminPasswordInput.focus();
+                }
+            });
+
+            submitPasswordBtn.addEventListener('click', () => {
+                if (adminPasswordInput.value === ADMIN_PASSWORD) {
+                    showAdminBtn.classList.remove('hidden');
+                    passwordPrompt.classList.add('hidden');
+                    adminPasswordInput.value = ''; // Limpiar contraseña
+                    alert('Acceso de administrador concedido.');
+                } else {
+                    alert('Contraseña incorrecta.');
+                    adminPasswordInput.value = ''; // Limpiar contraseña
+                }
+            });
+
+            adminPasswordInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    submitPasswordBtn.click();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

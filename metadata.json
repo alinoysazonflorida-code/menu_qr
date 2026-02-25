@@ -1,0 +1,12 @@
+{
+  "name": "Aliño y Sazón Digital Menu",
+  "description": "A digital menu for the restaurant 'Aliño y Sazón' with a desert theme, featuring a customer view and a password-protected admin panel for daily menu management.",
+  "entry": "index.html",
+  "multiPage": false,
+  "files": [
+    "index.html",
+    "metadata.json"
+  ],
+  "tailwind": { "source": "play-cdn" },
+  "generatedAt": "2024-07-30T14:45:00Z"
+}
