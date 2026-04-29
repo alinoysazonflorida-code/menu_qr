@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Aliño y Sazón - Menú Digital</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --rojo: #D42A10;
+            --rojo-osc: #8C1A08;
+            --naranja: #F06020;
+            --naranja-cl: #FF8840;
+            --amarillo: #FFD010;
+            --amarillo-cl: #FFE860;
+            --verde: #1E8040;
+            --verde-cl: #40C060;
+            --arena: #FFE080;
+            --crema: #FFFAEE;
+            --card-bg: rgba(36,10,2,0.97);
+            --card-borde: rgba(220,160,20,0.32);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background:
+                url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M26 0 L52 26 L26 52 L0 26 Z' fill='none' stroke='%23FF8800' stroke-opacity='0.06' stroke-width='1'/%3E%3C/svg%3E"),
+                linear-gradient(160deg, #1A0400 0%, #3D0A04 25%, #6B1A04 50%, #3A0C10 75%, #1A0408 100%);
+            background-attachment: fixed;
+        }
+
+        .top-band {
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--verde), var(--amarillo), var(--rojo), var(--naranja), var(--amarillo), var(--verde));
+            background-size: 400% 100%;
+            animation: bandSlide 6s linear infinite;
+        }
+
+        @keyframes bandSlide { 0% { background-position: 0%; } 100% { background-position: 400%; } }
+        @keyframes logoFloat { 0%,100% { transform: translateY(0) rotate(-1deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+        @keyframes panelIn { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+
+        .app-wrapper {
+            max-width: 940px;
+            margin: 0 auto;
+            padding: 0 16px 80px;
+        }
+
+        .site-header {
+            text-align: center;
+            padding: 28px 16px 16px;
+            position: relative;
+        }
+
+        #adminLoginContainer {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            font-size: .58rem;
+            letter-spacing: .18em;
+            color: var(--arena);
+            opacity: .1;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: opacity .3s;
+        }
+
+        #adminLoginContainer:hover { opacity: 1; }
+
+        .logo-wrap {
+            display: inline-block;
+            position: relative;
+            filter: drop-shadow(0 0 28px rgba(255,160,20,0.55)) drop-shadow(0 8px 20px rgba(0,0,0,0.7));
+            animation: logoFloat 4.5s ease-in-out infinite;
+        }
+
+        .logo-img {
+            width: clamp(240px, 58vw, 430px);
+            max-height: 250px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .site-subtitle {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(.82rem, 2.2vw, 1rem);
+            color: var(--amarillo);
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            margin-top: 10px;
+            text-shadow: 0 0 18px rgba(255,208,16,.6), 0 2px 6px rgba(0,0,0,.8);
+        }
+
+        .admin-input {
+            padding: 10px 16px;
+            background: rgba(50,12,4,.92);
+            border: 2px solid var(--amarillo);
+            border-radius: 22px;
+            color: var(--crema);
+            font-family: 'Nunito', sans-serif;
+            font-size: .88rem;
+            outline: none;
+            width: 200px;
+        }
+
+        .admin-input:focus { box-shadow: 0 0 0 3px rgba(255,208,16,.25); }
+        .admin-input::placeholder { color: rgba(255,224,128,.35); }
+
+        .btn-verde,
+        .btn-rojo {
+            font-family: 'Fredoka One', cursive;
+            font-size: .98rem;
+            padding: 12px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 30px;
+            transition: all .25s;
+        }
+
+        .btn-verde {
+            background: linear-gradient(135deg, #20A048, #145E2C);
+            color: #D0FFE0;
+            border: 2px solid rgba(64,192,96,.4);
+            box-shadow: 0 4px 18px rgba(30,128,64,.55), inset 0 1px 0 rgba(255,255,255,.12);
+        }
+
+        .btn-rojo {
+            background: linear-gradient(135deg, var(--rojo), var(--rojo-osc));
+            color: var(--amarillo-cl);
+            border: 2px solid rgba(255,208,16,.4);
+            box-shadow: 0 4px 18px rgba(212,42,16,.55), inset 0 1px 0 rgba(255,255,255,.12);
+        }
+
+        .btn-verde:hover,
+        .btn-rojo:hover { transform: translateY(-2px); }
+
+        .tabs-wrapper { margin-bottom: 22px; }
+
+        .tabs-scroll {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+            scrollbar-width: none;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .tabs-scroll::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            font-family: 'Fredoka One', cursive;
+            font-size: .95rem;
+            padding: 10px 24px;
+            border: 2px solid rgba(220,160,20,.25);
+            border-radius: 30px;
+            cursor: pointer;
+            white-space: nowrap;
+            background: rgba(60,16,4,.75);
+            color: rgba(255,224,128,.55);
+            transition: all .22s;
+            flex-shrink: 0;
+        }
+
+        .tab-btn:hover {
+            border-color: rgba(255,200,0,.55);
+            color: var(--arena);
+            background: rgba(100,24,6,.8);
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--rojo), #6B0E04);
+            color: var(--amarillo-cl);
+            border-color: rgba(255,210,0,.6);
+            box-shadow: 0 4px 18px rgba(212,42,16,.6), 0 0 0 1px rgba(255,208,16,.15), inset 0 1px 0 rgba(255,255,255,.12);
+            text-shadow: 0 1px 6px rgba(0,0,0,.5);
+        }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: panelIn .3s ease both; }
+
+        .cards-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .daily-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 14px;
+        }
+
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            border: 2px solid var(--card-borde);
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: 0 8px 32px rgba(0,0,0,.65), inset 0 1px 0 rgba(255,208,16,.08);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 14px 40px rgba(0,0,0,.7), 0 0 0 1px rgba(255,208,16,.22);
+        }
+
+        .menu-card.cat-corrientes { border-top: 3px solid var(--naranja); }
+        .menu-card.cat-especiales { border-top: 3px solid var(--amarillo); }
+        .menu-card.cat-adicionales { border-top: 3px solid var(--verde-cl); }
+        .menu-card.cat-bebidas { border-top: 3px solid #60C8FF; }
+        .menu-card.cat-daily { border-top: 3px solid var(--naranja-cl); }
+
+        .card-header {
+            padding: 14px 20px 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .card-header::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 20px;
+            right: 20px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(220,160,20,.5), transparent);
+        }
+
+        .card-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,.5);
+        }
+
+        .icon-rojo { background: linear-gradient(135deg,var(--rojo),var(--rojo-osc)); border: 1px solid rgba(255,208,16,.25); }
+        .icon-naranja { background: linear-gradient(135deg,var(--naranja),#B03800); border: 1px solid rgba(255,208,16,.25); }
+        .icon-amarillo { background: linear-gradient(135deg,#C08800,#7A5000); border: 1px solid rgba(255,208,16,.3); }
+        .icon-verde { background: linear-gradient(135deg,var(--verde),#0E4820); border: 1px solid rgba(64,192,96,.3); }
+        .icon-azul { background: linear-gradient(135deg,#1878C0,#0A3A70); border: 1px solid rgba(96,200,255,.3); }
+
+        .card-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.2rem;
+            color: var(--arena);
+            text-shadow: 0 2px 8px rgba(0,0,0,.6);
+        }
+
+        .card-body { padding: 14px 20px; }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+            padding: 5px 0;
+            border-bottom: 1px dashed rgba(220,160,20,.14);
+        }
+
+        .menu-item:last-child { border-bottom: none; }
+
+        .item-name {
+            font-size: .87rem;
+            color: var(--crema);
+            line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .item-price {
+            font-family: 'Fredoka One', cursive;
+            font-size: .88rem;
+            color: var(--amarillo);
+            white-space: nowrap;
+            flex-shrink: 0;
+            text-shadow: 0 0 10px rgba(255,208,16,.4);
+        }
+
+        .empty-msg {
+            font-size: .82rem;
+            color: rgba(255,250,238,.35);
+            font-style: italic;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .footer-band {
+            text-align: center;
+            padding: 24px 18px;
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(.92rem, 3vw, 1.12rem);
+            letter-spacing: .06em;
+            text-transform: uppercase;
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255,208,16,.28), transparent 52%),
+                linear-gradient(90deg, transparent, rgba(255,180,0,.22), transparent);
+            color: var(--amarillo-cl);
+            margin-top: 20px;
+            border-radius: 14px;
+            border: 1px solid rgba(255,208,16,.28);
+            text-shadow: 0 0 14px rgba(255,208,16,.42), 0 2px 8px rgba(0,0,0,.7);
+        }
+
+        .footer-dessert {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+        }
+
+        .footer-dessert-title,
+        .footer-dessert-icons,
+        .footer-dessert-price {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .footer-dessert-title {
+            flex-wrap: nowrap;
+            font-size: clamp(1rem, 3.6vw, 1.28rem);
+        }
+
+        .footer-dessert-title span:nth-child(2) {
+            min-width: 0;
+        }
+
+        .footer-dessert-icons {
+            gap: 12px;
+            margin-top: 2px;
+        }
+
+        .footer-dessert-icon,
+        .footer-money-icon {
+            font-size: 1.6rem;
+            filter: drop-shadow(0 0 10px rgba(255,208,16,.45));
+        }
+
+        .footer-dessert-icon {
+            font-size: 1.75rem;
+        }
+
+        .footer-dessert-price {
+            font-size: clamp(1.08rem, 3.4vw, 1.34rem);
+            color: var(--verde-cl);
+            text-shadow: 0 0 12px rgba(64,192,96,.45), 0 2px 8px rgba(0,0,0,.7);
+        }
+
+        .admin-section {
+            background: linear-gradient(160deg,rgba(8,36,18,.97) 0%,rgba(4,20,10,.98) 100%);
+            border: 2px solid rgba(64,192,96,.2);
+            border-radius: 18px;
+            overflow: hidden;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 28px rgba(0,0,0,.5);
+        }
+
+        .admin-section-header {
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(64,192,96,.18);
+            background: rgba(30,128,64,.12);
+        }
+
+        .admin-section-header h3 {
+            font-family: 'Fredoka One', cursive;
+            font-size: 1.1rem;
+            color: #B0FFD0;
+            text-shadow: 0 0 12px rgba(64,192,96,.4);
+        }
+
+        .admin-section-body { padding: 16px 20px; }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .admin-sublabel {
+            font-family: 'Fredoka One', cursive;
+            font-size: .78rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            color: var(--verde-cl);
+            margin-bottom: 10px;
+        }
+
+        .admin-check-label {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background .15s;
+            font-size: .88rem;
+            color: #C0FFD8;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .admin-check-label:hover { background: rgba(64,192,96,.1); }
+        .admin-check-label input { width: 17px; height: 17px; accent-color: var(--verde-cl); cursor: pointer; flex-shrink: 0; }
+
+        .admin-cat-title {
+            font-family: 'Fredoka One', cursive;
+            font-size: .95rem;
+            color: #90FFBA;
+            margin: 18px 0 7px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(64,192,96,.2);
+        }
+
+        .admin-cat-title:first-child { margin-top: 0; }
+
+        .toggle-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 3px;
+            transition: all .15s;
+            border: 1px solid transparent;
+            gap: 12px;
+        }
+
+        .toggle-row:hover { background: rgba(64,192,96,.07); border-color: rgba(64,192,96,.14); }
+        .toggle-row.is-inactive { opacity: .4; }
+
+        .toggle-item-name {
+            font-size: .87rem;
+            color: #C0FFD8;
+            font-weight: 600;
+            line-height: 1.35;
+        }
+
+        .toggle-item-price {
+            font-size: .72rem;
+            color: var(--verde-cl);
+            margin-left: 5px;
+            opacity: .7;
+            white-space: nowrap;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 46px;
+            height: 25px;
+            flex-shrink: 0;
+        }
+
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background: rgba(255,255,255,.07);
+            border-radius: 25px;
+            transition: .3s;
+            border: 1px solid rgba(255,255,255,.1);
+        }
+
+        .slider::before {
+            content: '';
+            position: absolute;
+            width: 19px;
+            height: 19px;
+            left: 2px;
+            bottom: 2px;
+            background: rgba(255,255,255,.4);
+            border-radius: 50%;
+            transition: .3s;
+        }
+
+        input:checked + .slider {
+            background: linear-gradient(135deg,var(--verde-cl),var(--verde));
+            border-color: var(--verde-cl);
+        }
+
+        input:checked + .slider::before {
+            transform: translateX(21px);
+            background: white;
+        }
+
+        .admin-heading {
+            font-family: 'Fredoka One', cursive;
+            font-size: clamp(1.6rem,4.5vw,2.4rem);
+            color: #90FFB8;
+            text-shadow: 0 0 20px rgba(64,192,96,.5), 2px 3px 0 #0A3018;
+            text-align: center;
+            margin-bottom: 6px;
+        }
+
+        .admin-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .admin-divider span { height: 2px; width: 55px; background: linear-gradient(90deg,transparent,#40C060); }
+        .admin-divider span:last-child { background: linear-gradient(90deg,#40C060,transparent); }
+
+        .hidden { display: none !important; }
+
+        @media(max-width: 580px) {
+            .two-col { grid-template-columns: 1fr; }
+        }
+
+        @media(max-width: 520px) {
+            .daily-row,
+            .admin-grid { grid-template-columns: 1fr; }
+
+            .card-title { font-size: 1.05rem; }
+            .footer-dessert { gap: 8px; }
+            .footer-dessert-title {
+                font-size: clamp(.92rem, 3.8vw, 1.08rem);
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-band"></div>
+
+<div class="app-wrapper">
+    <header class="site-header">
+        <div id="adminLoginContainer">Admin</div>
+
+        <div class="logo-wrap">
+            <img src="assets/logo-alino-sazon.png" alt="Restaurante Aliño y Sazón" class="logo-img">
+        </div>
+
+        <p class="site-subtitle">✦ Menú Digital ✦</p>
+
+        <div id="passwordPrompt" style="margin-top:14px;display:none;justify-content:center;gap:8px;align-items:center;flex-wrap:wrap;">
+            <input type="password" id="adminPassword" placeholder="Contraseña" class="admin-input">
+            <button id="submitPasswordBtn" class="btn-verde" style="padding:10px 22px;font-size:.88rem;">Entrar</button>
+        </div>
+    </header>
+
+    <div style="display:flex;justify-content:center;gap:12px;margin-bottom:22px;flex-wrap:wrap;">
+        <button id="showAdminBtn" class="btn-verde hidden">⚙️ Administrar</button>
+        <button id="showMenuBtn" class="btn-rojo hidden">🍽️ Ver Menú</button>
+    </div>
+
+    <div id="customerView">
+        <div class="tabs-wrapper">
+            <div class="tabs-scroll">
+                <button class="tab-btn active" data-tab="corrientes">🍲 Corrientes</button>
+                <button class="tab-btn" data-tab="especiales">⭐ Especiales</button>
+                <button class="tab-btn" data-tab="adicionales">➕ Adicionales</button>
+                <button class="tab-btn" data-tab="bebidas">🥤 Bebidas</button>
+            </div>
+        </div>
+
+        <div class="tab-panel active" id="tab-corrientes">
+            <div class="cards-stack">
+                <div class="daily-row">
+                    <div class="menu-card cat-daily">
+                        <div class="card-header">
+                            <div class="card-icon icon-naranja">🫘</div>
+                            <div class="card-title">Principio del Día</div>
+                        </div>
+                        <div class="card-body"><div id="principiosList"></div></div>
+                    </div>
+                    <div class="menu-card cat-daily">
+                        <div class="card-header">
+                            <div class="card-icon icon-naranja">🍵</div>
+                            <div class="card-title">Sopa del Día</div>
+                        </div>
+                        <div class="card-body"><div id="sopaList"></div></div>
+                    </div>
+                </div>
+
+                <div class="menu-card cat-corrientes">
+                    <div class="card-header">
+                        <div class="card-icon icon-rojo">🍽️</div>
+                        <div class="card-title">Platos Corrientes</div>
+                    </div>
+                    <div class="card-body"><div class="two-col" id="corrientesList"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-especiales">
+            <div class="cards-stack">
+                <div class="menu-card cat-especiales" id="espDiaCard">
+                    <div class="card-header">
+                        <div class="card-icon icon-amarillo">⭐</div>
+                        <div class="card-title">Especiales del Día</div>
+                    </div>
+                    <div class="card-body"><div id="espDiaList"></div></div>
+                </div>
+
+                <div class="menu-card cat-especiales">
+                    <div class="card-header">
+                        <div class="card-icon icon-amarillo">🌟</div>
+                        <div class="card-title">Carta de Especiales</div>
+                    </div>
+                    <div class="card-body"><div class="two-col" id="especialesList"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-adicionales">
+            <div class="menu-card cat-adicionales">
+                <div class="card-header">
+                    <div class="card-icon icon-verde">➕</div>
+                    <div class="card-title">Adicionales</div>
+                </div>
+                <div class="card-body"><div class="two-col" id="adicionalesList"></div></div>
+            </div>
+        </div>
+
+        <div class="tab-panel" id="tab-bebidas">
+            <div class="menu-card cat-bebidas">
+                <div class="card-header">
+                    <div class="card-icon icon-azul">🥤</div>
+                    <div class="card-title">Bebidas</div>
+                </div>
+                <div class="card-body"><div class="two-col" id="bebidasList"></div></div>
+            </div>
+        </div>
+
+        <div class="footer-band">
+            <span class="footer-dessert">
+                <span class="footer-dessert-title">
+                    <span>✦</span>
+                    <span>Preguntar por nuestros postres</span>
+                    <span>✦</span>
+                </span>
+                <span class="footer-dessert-icons" aria-hidden="true">
+                    <span class="footer-dessert-icon" aria-hidden="true">🍮</span>
+                    <span class="footer-dessert-icon" aria-hidden="true">🍰</span>
+                    <span class="footer-dessert-icon" aria-hidden="true">🍮</span>
+                </span>
+                <span class="footer-dessert-price">
+                    <span class="footer-money-icon" aria-hidden="true">💵</span>
+                    <span>Valor: $ 5.000</span>
+                    <span class="footer-money-icon" aria-hidden="true">💵</span>
+                </span>
+            </span>
+        </div>
+    </div>
+
+    <div id="adminView" class="hidden">
+        <p class="admin-heading">Panel de Administración</p>
+        <div class="admin-divider">
+            <span></span><span style="font-size:1.2rem">🌿</span><span></span>
+        </div>
+
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <span style="font-size:1.2rem">📅</span>
+                <h3>Selección Diaria</h3>
+            </div>
+            <div class="admin-section-body">
+                <div class="admin-grid">
+                    <div>
+                        <p class="admin-sublabel">🫘 Principios <span style="opacity:.6;font-size:.67rem">(máx. 2)</span></p>
+                        <div id="adminPrincipiosSelection"></div>
+                    </div>
+                    <div>
+                        <p class="admin-sublabel">🍵 Sopa del día <span style="opacity:.6;font-size:.67rem">(1 opción)</span></p>
+                        <div id="adminSopasSelection"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <span style="font-size:1.2rem">⚙️</span>
+                <h3>Activar / Desactivar Productos</h3>
+            </div>
+            <div class="admin-section-body">
+                <div id="adminAllItemsList"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+const rawData = [
+    {name:"Pollo salsa Champiñón",price:23000,category:"especiales del dia"},
+    {name:"Róbalo en salsa",price:25000,category:"especiales del dia"},
+    {name:"Ensalada Rusa",price:21000,category:"especiales del dia"},
+    {name:"Ajiaco Santafereño",price:21000,category:"especiales del dia"},
+    {name:"Bandeja paisa",price:28000,category:"especiales del dia"},
+    {name:"Sancocho de Costilla",price:29000,category:"especiales del dia"},
+    {name:"Mini Paisa",price:20000,category:"especiales del dia"},
+    {name:"Lasagna",price:23000,category:"especiales del dia"},
+    {name:"Garbanzo",price:0,category:"principio"},
+    {name:"Lentejas",price:0,category:"principio"},
+    {name:"Arveja",price:0,category:"principio"},
+    {name:"Macarrón",price:0,category:"principio"},
+    {name:"Frijol Rojo",price:0,category:"principio"},
+    {name:"Frijol Blanco",price:0,category:"principio"},
+    {name:"Habichuela",price:0,category:"principio"},
+    {name:"Ensalada de Tornillos",price:0,category:"principio"},
+    {name:"Calabacín",price:0,category:"principio"},
+    {name:"Arroz Mixto",price:0,category:"principio"},
+    {name:"Acelgas",price:0,category:"principio"},
+    {name:"Yota",price:0,category:"principio"},
+    {name:"Chop Suey",price:0,category:"principio"},
+    {name:"Ahuyama",price:0,category:"principio"},
+    {name:"Berenjena",price:0,category:"principio"},
+    {name:"Spaghetti",price:0,category:"principio"},
+    {name:"Avena",price:0,category:"sopas"},
+    {name:"Patacón",price:0,category:"sopas"},
+    {name:"Crema de Ahuyama",price:0,category:"sopas"},
+    {name:"Ruyas",price:0,category:"sopas"},
+    {name:"Cuchuco de Maíz",price:0,category:"sopas"},
+    {name:"Verduras",price:0,category:"sopas"},
+    {name:"Crema de Cebolla",price:0,category:"sopas"},
+    {name:"Pastas",price:0,category:"sopas"},
+    {name:"Arroz",price:0,category:"sopas"},
+    {name:"Cuchuco de Cebada",price:0,category:"sopas"},
+    {name:"Apio",price:0,category:"sopas"},
+    {name:"Arveja",price:0,category:"sopas"},
+    {name:"Albóndigas",price:16000,category:"corrientes"},
+    {name:"Carne Asada",price:16000,category:"corrientes"},
+    {name:"Carne Sudada",price:16000,category:"corrientes"},
+    {name:"Carne Bistec",price:16000,category:"corrientes"},
+    {name:"Carne Goulash",price:16000,category:"corrientes"},
+    {name:"Carne Hamburguesa",price:16000,category:"corrientes"},
+    {name:"Carne Desmechada",price:16000,category:"corrientes"},
+    {name:"Pollo Sudado",price:16000,category:"corrientes"},
+    {name:"Pollo Milanesa",price:16000,category:"corrientes"},
+    {name:"Pollo Frito o Asado",price:16000,category:"corrientes"},
+    {name:"Pechuga Asada o Agridulce",price:16000,category:"corrientes"},
+    {name:"Hígado Asado o Bistec",price:16000,category:"corrientes"},
+    {name:"Lomo de Cerdo Asado o Agridulce",price:16000,category:"corrientes"},
+    {name:"Trucha",price:19000,category:"corrientes"},
+    {name:"Mojarra Frita",price:19000,category:"corrientes"},
+    {name:"Bocachico Frito",price:19000,category:"corrientes"},
+    {name:"Filete Róbalo",price:21000,category:"corrientes"},
+    {name:"Churrasco",price:38000,category:"especiales"},
+    {name:"Bandeja Paisa",price:28000,category:"especiales"},
+    {name:"Super Róbalo",price:40000,category:"especiales"},
+    {name:"Carne Oreada",price:38000,category:"especiales"},
+    {name:"Picada Especial",price:86000,category:"especiales"},
+    {name:"Arroz con Pollo Grande",price:21000,category:"especiales"},
+    {name:"Arroz con Pollo Pequeño",price:15000,category:"especiales"},
+    {name:"Bandeja de Carnes",price:58000,category:"especiales"},
+    {name:"Cabro con Pepitoria",price:38000,category:"especiales"},
+    {name:"Mojarra Frita Especial",price:38000,category:"especiales"},
+    {name:"Lomo de Cerdo Hawaiano",price:40000,category:"especiales"},
+    {name:"Lomo de Cerdo BBQ/Salsa Ciruela",price:38000,category:"especiales"},
+    {name:"Pechuga Hawaiana",price:40000,category:"especiales"},
+    {name:"Pechuga BBQ/Salsa Ciruela",price:38000,category:"especiales"},
+    {name:"Trucha frita o Al ajillo",price:38000,category:"especiales"},
+    {name:"Carne Especial",price:21000,category:"especiales"},
+    {name:"Pollo Especial",price:21000,category:"especiales"},
+    {name:"Lomo Especial",price:21000,category:"especiales"},
+    {name:"Spaghetti Grande",price:21000,category:"especiales"},
+    {name:"Spaghetti Pequeño",price:15000,category:"especiales"},
+    {name:"Costillas de Cerdo",price:24000,category:"especiales"},
+    {name:"Sobrebarriga",price:38000,category:"especiales"},
+    {name:"Cazuela Mixta",price:38000,category:"especiales"},
+    {name:"Arroz con Camarón",price:30000,category:"especiales"},
+    {name:"Spaghetti Con Camarón",price:30000,category:"especiales"},
+    {name:"Sombrero Mexicano (frijolada)",price:20000,category:"especiales"},
+    {name:"Mute",price:23000,category:"especiales"},
+    {name:"Porción de Papa Francesa",price:13000,category:"adicionales"},
+    {name:"Media Porción de Papa Francesa",price:8000,category:"adicionales"},
+    {name:"Porción de Arroz",price:4000,category:"adicionales"},
+    {name:"Porción de Principio",price:4000,category:"adicionales"},
+    {name:"Porción de Ensalada",price:4000,category:"adicionales"},
+    {name:"Porción de Aguacate",price:4000,category:"adicionales"},
+    {name:"Porción de Chicharrón",price:6000,category:"adicionales"},
+    {name:"Porción de Frita",price:2000,category:"adicionales"},
+    {name:"Porción de Maduro",price:4000,category:"adicionales"},
+    {name:"Porción de Patacón",price:5000,category:"adicionales"},
+    {name:"Porción de Pepitoria",price:11000,category:"adicionales"},
+    {name:"Porción de Pescado",price:11000,category:"adicionales"},
+    {name:"Porción Proteína",price:8000,category:"adicionales"},
+    {name:"Porción Proteína 150gr",price:13000,category:"adicionales"},
+    {name:"Porción Proteína 300gr",price:21000,category:"adicionales"},
+    {name:"Porción Yuca",price:4000,category:"adicionales"},
+    {name:"Jugo Adicional",price:2500,category:"bebidas"},
+    {name:"Agua Grande",price:4000,category:"bebidas"},
+    {name:"Agua Pequeña",price:3000,category:"bebidas"},
+    {name:"Gaseosa Litro",price:7000,category:"bebidas"},
+    {name:"Gaseosa 1.5L",price:9500,category:"bebidas"},
+    {name:"Gaseosa 350ml",price:4500,category:"bebidas"},
+    {name:"Gaseosa PET400",price:5500,category:"bebidas"},
+    {name:"Jugo Hit 350ml",price:4500,category:"bebidas"}
+];
+
+// Pega aquí la configuración de tu app web de Firebase cuando la tengas.
+// Mientras estos campos estén vacíos, la página seguirá funcionando solo en este dispositivo.
+const firebaseConfig = {
+    apiKey: "AIzaSyBPK1ghrIqp95gMeL1JUs934pEuHWAEPTs",
+    authDomain: "menu-alino-sazon.firebaseapp.com",
+    projectId: "menu-alino-sazon",
+    storageBucket: "menu-alino-sazon.firebasestorage.app",
+    messagingSenderId: "954810089134",
+    appId: "1:954810089134:web:c7fcefbac8c9cac8b1f73f"
+};
+
+const firebaseMenuPath = ['menus', 'alino-sazon'];
+const firebaseState = {
+    enabled: false,
+    applyingRemote: false,
+    docRef: null,
+    setDoc: null,
+    serverTimestamp: null
+};
+
+let menuItems = [];
+let dailySel = {principios: [], sopa: null};
+
+const fmt = new Intl.NumberFormat('es-CO', {
+    style: 'currency',
+    currency: 'COP',
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0
+});
+
+const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+}[char]));
+
+const fP = price => price === 0 ? '' : fmt.format(price);
+const menuRow = (name, price) => `<div class="menu-item"><span class="item-name">${escapeHtml(name)}</span>${price ? `<span class="item-price">${fP(price)}</span>` : ''}</div>`;
+const emptyMsg = text => `<p class="empty-msg">${escapeHtml(text)}</p>`;
+
+function setHtml(id, html) {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+}
+
+function initMenu() {
+    menuItems = rawData.map((item, index) => ({...item, id: `item-${index}`, isActive: true}));
+
+    try {
+        const savedItems = localStorage.getItem('alinoMenu3');
+        const savedDaily = localStorage.getItem('alinoSel3');
+
+        if (savedItems) {
+            const parsed = JSON.parse(savedItems);
+            menuItems = menuItems.map(item => {
+                const found = parsed.find(saved => saved.id === item.id);
+                return found ? {...item, isActive: found.isActive} : item;
+            });
+        }
+
+        if (savedDaily) {
+            const parsedDaily = JSON.parse(savedDaily);
+            dailySel = {
+                principios: Array.isArray(parsedDaily.principios) ? parsedDaily.principios : [],
+                sopa: parsedDaily.sopa || null
+            };
+        }
+    } catch (error) {
+        console.warn('No se pudo cargar la configuración guardada.', error);
+    }
+}
+
+function save() {
+    saveLocal();
+    saveFirebase();
+}
+
+function saveLocal() {
+    try {
+        localStorage.setItem('alinoMenu3', JSON.stringify(menuItems));
+        localStorage.setItem('alinoSel3', JSON.stringify(dailySel));
+    } catch (error) {
+        console.warn('No se pudo guardar la configuración.', error);
+    }
+}
+
+function hasFirebaseConfig() {
+    return Boolean(firebaseConfig.apiKey && firebaseConfig.projectId && firebaseConfig.appId);
+}
+
+function getCloudState() {
+    return {
+        items: menuItems.map(item => ({
+            id: item.id,
+            isActive: item.isActive
+        })),
+        dailySel: {
+            principios: [...dailySel.principios],
+            sopa: dailySel.sopa
+        },
+        updatedAt: firebaseState.serverTimestamp ? firebaseState.serverTimestamp() : new Date().toISOString()
+    };
+}
+
+function applyCloudState(data) {
+    if (!data) return;
+
+    firebaseState.applyingRemote = true;
+
+    if (Array.isArray(data.items)) {
+        menuItems = menuItems.map(item => {
+            const found = data.items.find(saved => saved.id === item.id);
+            return found ? {...item, isActive: Boolean(found.isActive)} : item;
+        });
+    }
+
+    if (data.dailySel) {
+        dailySel = {
+            principios: Array.isArray(data.dailySel.principios) ? data.dailySel.principios : [],
+            sopa: data.dailySel.sopa || null
+        };
+    }
+
+    saveLocal();
+    renderMenu();
+    renderAdmin();
+
+    firebaseState.applyingRemote = false;
+}
+
+async function saveFirebase() {
+    if (!firebaseState.enabled || firebaseState.applyingRemote) return;
+
+    try {
+        await firebaseState.setDoc(firebaseState.docRef, getCloudState(), {merge: true});
+    } catch (error) {
+        console.warn('No se pudo guardar en Firebase. Se mantiene la copia local.', error);
+    }
+}
+
+async function initFirebaseSync() {
+    if (!hasFirebaseConfig()) {
+        console.info('Firebase aun no esta configurado. Usando almacenamiento local.');
+        return;
+    }
+
+    try {
+        const {initializeApp} = await import('https://www.gstatic.com/firebasejs/12.7.0/firebase-app.js');
+        const {getFirestore, doc, onSnapshot, setDoc, serverTimestamp} = await import('https://www.gstatic.com/firebasejs/12.7.0/firebase-firestore.js');
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        firebaseState.docRef = doc(db, ...firebaseMenuPath);
+        firebaseState.setDoc = setDoc;
+        firebaseState.serverTimestamp = serverTimestamp;
+        firebaseState.enabled = true;
+
+        onSnapshot(firebaseState.docRef, snapshot => {
+            if (snapshot.exists()) {
+                applyCloudState(snapshot.data());
+            } else {
+                saveFirebase();
+            }
+        }, error => {
+            firebaseState.enabled = false;
+            console.warn('No se pudo conectar con Firebase. Se mantiene la copia local.', error);
+        });
+    } catch (error) {
+        firebaseState.enabled = false;
+        console.warn('No se pudo iniciar Firebase. Revisa la configuracion.', error);
+    }
+}
+
+function renderMenu() {
+    const active = menuItems.filter(item => item.isActive);
+
+    const principios = active.filter(item => dailySel.principios.includes(item.id));
+    setHtml('principiosList', principios.length ? principios.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('Por confirmar'));
+
+    const sopa = active.find(item => item.id === dailySel.sopa);
+    setHtml('sopaList', sopa ? menuRow(sopa.name, sopa.price) : emptyMsg('Por confirmar'));
+
+    const corrientes = active.filter(item => item.category === 'corrientes');
+    setHtml('corrientesList', corrientes.length ? corrientes.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('No hay platos activos.'));
+
+    const especialesDia = active.filter(item => item.category === 'especiales del dia');
+    setHtml('espDiaList', especialesDia.length ? especialesDia.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('Sin especiales del día.'));
+    document.getElementById('espDiaCard').style.display = especialesDia.length ? '' : 'none';
+
+    const especiales = active.filter(item => item.category === 'especiales');
+    setHtml('especialesList', especiales.length ? especiales.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('No hay especiales.'));
+
+    const adicionales = active.filter(item => item.category === 'adicionales');
+    setHtml('adicionalesList', adicionales.length ? adicionales.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('No hay adicionales.'));
+
+    const bebidas = active.filter(item => item.category === 'bebidas');
+    setHtml('bebidasList', bebidas.length ? bebidas.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('No hay bebidas.'));
+}
+
+function renderAdmin() {
+    const cats = {
+        'especiales del dia': '⭐ Especiales del Día',
+        principio: '🫘 Principios',
+        sopas: '🍵 Sopas',
+        corrientes: '🍽️ Corrientes',
+        especiales: '🌟 Especiales',
+        adicionales: '➕ Adicionales',
+        bebidas: '🥤 Bebidas'
+    };
+
+    setHtml('adminPrincipiosSelection', menuItems
+        .filter(item => item.category === 'principio')
+        .map(item => `<label class="admin-check-label"><input type="checkbox" data-item-id="${item.id}" ${dailySel.principios.includes(item.id) ? 'checked' : ''} onchange="handlePrinc(this)"><span>${escapeHtml(item.name)}</span></label>`)
+        .join(''));
+
+    setHtml('adminSopasSelection', menuItems
+        .filter(item => item.category === 'sopas')
+        .map(item => `<label class="admin-check-label"><input type="radio" name="dailySopa" data-item-id="${item.id}" ${dailySel.sopa === item.id ? 'checked' : ''} onchange="handleSopa(this)"><span>${escapeHtml(item.name)}</span></label>`)
+        .join(''));
+
+    const catList = [...new Set(menuItems.map(item => item.category))];
+    setHtml('adminAllItemsList', catList.map(cat => `
+        <p class="admin-cat-title">${cats[cat] || escapeHtml(cat)}</p>
+        ${menuItems.filter(item => item.category === cat).map(item => `
+            <div class="toggle-row ${item.isActive ? 'is-active' : 'is-inactive'}">
+                <span class="toggle-item-name">${escapeHtml(item.name)}${item.price ? `<span class="toggle-item-price">${fP(item.price)}</span>` : ''}</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" data-item-id="${item.id}" ${item.isActive ? 'checked' : ''} onchange="toggleItem(this)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+        `).join('')}
+    `).join(''));
+}
+
+function handlePrinc(cb) {
+    const id = cb.dataset.itemId;
+
+    if (cb.checked) {
+        if (dailySel.principios.length < 2) {
+            dailySel.principios.push(id);
+        } else {
+            cb.checked = false;
+            alert('Máximo 2 principios.');
+            return;
+        }
+    } else {
+        dailySel.principios = dailySel.principios.filter(itemId => itemId !== id);
+    }
+
+    save();
+    renderMenu();
+}
+
+function handleSopa(radio) {
+    dailySel.sopa = radio.checked ? radio.dataset.itemId : null;
+    save();
+    renderMenu();
+}
+
+function toggleItem(cb) {
+    const item = menuItems.find(menuItem => menuItem.id === cb.dataset.itemId);
+    if (!item) return;
+
+    item.isActive = cb.checked;
+
+    if (!item.isActive) {
+        dailySel.principios = dailySel.principios.filter(id => id !== item.id);
+        if (dailySel.sopa === item.id) dailySel.sopa = null;
+    }
+
+    const row = cb.closest('.toggle-row');
+    if (row) {
+        row.classList.toggle('is-active', item.isActive);
+        row.classList.toggle('is-inactive', !item.isActive);
+    }
+
+    save();
+    renderMenu();
+    renderAdmin();
+}
+
+function showView(id) {
+    ['customerView','adminView'].forEach(view => document.getElementById(view).classList.add('hidden'));
+    document.getElementById(id).classList.remove('hidden');
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+        btn.classList.add('active');
+        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+    });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    initMenu();
+    renderMenu();
+    renderAdmin();
+    showView('customerView');
+    initFirebaseSync();
+
+    const PASS = 'fabniño';
+    const loginEl = document.getElementById('adminLoginContainer');
+    const promptEl = document.getElementById('passwordPrompt');
+    const passEl = document.getElementById('adminPassword');
+    const submitEl = document.getElementById('submitPasswordBtn');
+    const adminBtn = document.getElementById('showAdminBtn');
+    const menuBtn = document.getElementById('showMenuBtn');
+
+    adminBtn.addEventListener('click', () => {
+        showView('adminView');
+        adminBtn.classList.add('hidden');
+        menuBtn.classList.remove('hidden');
+    });
+
+    menuBtn.addEventListener('click', () => {
+        showView('customerView');
+        menuBtn.classList.add('hidden');
+        adminBtn.classList.remove('hidden');
+    });
+
+    loginEl.addEventListener('click', () => {
+        const visible = promptEl.style.display === 'flex';
+        promptEl.style.display = visible ? 'none' : 'flex';
+        if (!visible) passEl.focus();
+    });
+
+    submitEl.addEventListener('click', () => {
+        if (passEl.value === PASS) {
+            adminBtn.classList.remove('hidden');
+            promptEl.style.display = 'none';
+            passEl.value = '';
+        } else {
+            alert('Contraseña incorrecta.');
+            passEl.value = '';
+        }
+    });
+
+    passEl.addEventListener('keypress', event => {
+        if (event.key === 'Enter') submitEl.click();
+    });
+});
+</script>
+</body>
+</html>
