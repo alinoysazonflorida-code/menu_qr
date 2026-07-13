@@ -282,10 +282,29 @@
 
         .menu-item:last-child { border-bottom: none; }
 
+        .menu-item.has-description {
+            align-items: flex-start;
+            padding: 8px 0;
+        }
+
+        .item-main {
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
         .item-name {
             font-size: .87rem;
             color: var(--crema);
             line-height: 1.4;
+            font-weight: 600;
+        }
+
+        .item-desc {
+            font-size: .72rem;
+            color: rgba(255,250,238,.66);
+            line-height: 1.35;
             font-weight: 600;
         }
 
@@ -397,6 +416,44 @@
         }
 
         .admin-section-body { padding: 16px 20px; }
+
+        .mode-control {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .mode-status {
+            min-width: 220px;
+        }
+
+        .mode-status-label {
+            font-family: 'Fredoka One', cursive;
+            font-size: .9rem;
+            color: #B0FFD0;
+            margin-bottom: 4px;
+        }
+
+        .mode-status-text {
+            font-size: .84rem;
+            color: rgba(192,255,216,.75);
+            line-height: 1.35;
+            font-weight: 700;
+        }
+
+        .mode-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .mode-buttons .btn-verde,
+        .mode-buttons .btn-rojo {
+            padding: 10px 18px;
+            font-size: .82rem;
+        }
 
         .admin-grid {
             display: grid;
@@ -534,6 +591,76 @@
         .admin-divider span:last-child { background: linear-gradient(90deg,#40C060,transparent); }
 
         .hidden { display: none !important; }
+
+        body.night-menu {
+            --rojo: #FF3218;
+            --rojo-osc: #7A0906;
+            --naranja: #FF7418;
+            --naranja-cl: #FFA83A;
+            --amarillo: #FFD21A;
+            --amarillo-cl: #FFF06A;
+            --verde: #239A4E;
+            --verde-cl: #55D66F;
+            --arena: #FFE090;
+            --crema: #FFF7E8;
+            --card-bg: rgba(20,5,8,0.98);
+            --card-borde: rgba(255,132,20,0.38);
+            background:
+                url("data:image/svg+xml,%3Csvg width='52' height='52' viewBox='0 0 52 52' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M26 0 L52 26 L26 52 L0 26 Z' fill='none' stroke='%23FFD010' stroke-opacity='0.055' stroke-width='1'/%3E%3C/svg%3E"),
+                radial-gradient(circle at 50% -10%, rgba(255,116,24,.24), transparent 34%),
+                linear-gradient(160deg, #070304 0%, #1A060C 28%, #4A0C12 52%, #2D0A0E 76%, #080303 100%);
+            background-attachment: fixed;
+        }
+
+        body.night-menu .top-band {
+            background: linear-gradient(90deg, var(--rojo), var(--naranja), var(--amarillo), var(--verde-cl), var(--naranja), var(--rojo));
+            background-size: 400% 100%;
+        }
+
+        body.night-menu .logo-wrap {
+            filter: drop-shadow(0 0 30px rgba(255,116,24,0.62)) drop-shadow(0 8px 22px rgba(0,0,0,0.78));
+        }
+
+        body.night-menu .site-subtitle {
+            color: var(--naranja-cl);
+            text-shadow: 0 0 18px rgba(255,116,24,.68), 0 2px 6px rgba(0,0,0,.85);
+        }
+
+        body.night-menu .site-subtitle::after {
+            content: 'Comidas Rapidas';
+            display: block;
+            margin-top: 7px;
+            font-family: 'Nunito', sans-serif;
+            font-size: .72rem;
+            font-weight: 800;
+            letter-spacing: .16em;
+            color: var(--amarillo-cl);
+        }
+
+        body.night-menu .tab-btn.active {
+            background: linear-gradient(135deg, var(--naranja), var(--rojo-osc));
+            color: var(--amarillo-cl);
+            box-shadow: 0 4px 20px rgba(255,116,24,.58), 0 0 0 1px rgba(255,208,16,.18), inset 0 1px 0 rgba(255,255,255,.12);
+        }
+
+        body.night-menu .menu-card {
+            box-shadow: 0 8px 34px rgba(0,0,0,.72), inset 0 1px 0 rgba(255,208,16,.09);
+        }
+
+        body.night-menu .menu-card:hover {
+            box-shadow: 0 14px 42px rgba(0,0,0,.76), 0 0 0 1px rgba(255,132,20,.28);
+        }
+
+        body.night-menu .footer-band {
+            background:
+                radial-gradient(circle at 50% 0%, rgba(255,116,24,.30), transparent 52%),
+                linear-gradient(90deg, transparent, rgba(255,208,16,.18), transparent);
+            border-color: rgba(255,132,20,.32);
+        }
+
+        body.night-menu .night-only-card .card-title {
+            color: var(--amarillo-cl);
+        }
 
         @media(max-width: 580px) {
             .two-col { grid-template-columns: 1fr; }
@@ -677,10 +804,47 @@
         </div>
     </div>
 
+    <div id="nightCustomerView" class="hidden">
+        <div class="tabs-wrapper">
+            <div class="tabs-scroll" id="nightTabs"></div>
+        </div>
+
+        <div class="cards-stack" id="nightPanels"></div>
+
+        <div class="footer-band">
+            <span class="footer-dessert">
+                <span class="footer-dessert-title">
+                    <span>✦</span>
+                    <span>Comidas Rapidas Aliño y Sazón</span>
+                    <span>✦</span>
+                </span>
+            </span>
+        </div>
+    </div>
+
     <div id="adminView" class="hidden">
         <p class="admin-heading">Panel de Administración</p>
         <div class="admin-divider">
             <span></span><span style="font-size:1.2rem">🌿</span><span></span>
+        </div>
+
+        <div class="admin-section">
+            <div class="admin-section-header">
+                <span style="font-size:1.2rem">⏱️</span>
+                <h3>Modo del Menú</h3>
+            </div>
+            <div class="admin-section-body">
+                <div class="mode-control">
+                    <div class="mode-status">
+                        <p class="mode-status-label" id="modeStatusLabel">Horario automático</p>
+                        <p class="mode-status-text" id="modeStatusText">De día muestra almuerzos y desde las 5 p. m. comidas rápidas.</p>
+                    </div>
+                    <div class="mode-buttons">
+                        <button id="modeToggleBtn" class="btn-rojo" type="button">Activar comidas rápidas</button>
+                        <button id="modeAutoBtn" class="btn-verde hidden" type="button">Volver a automático</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div class="admin-section">
@@ -822,6 +986,162 @@ const rawData = [
     {name:"Jugo Hit 350ml",price:4500,category:"bebidas"}
 ];
 
+const nightSections = [
+    {
+        id: 'hamburguesas',
+        label: '🍔 Hamburguesas',
+        title: 'Hamburguesas',
+        icon: '🍔',
+        iconClass: 'icon-rojo',
+        cardClass: 'cat-corrientes',
+        items: [
+            {name: 'Clasica', price: 18000, desc: 'Carne 1/4 de libra, queso, tomate, cebolla, lechuga, arepa y papas a la francesa.'},
+            {name: 'Mixta', price: 25000, desc: 'Carne 1/4 de libra, queso, tomate, cebolla, pollo desmechado, jamon, arepa, lechuga y papas a la francesa.'},
+            {name: 'Extrema', price: 27000, desc: 'Carne 1/4 de libra, queso, tomate, cebolla, pollo, filete, jamon, arepa, tocineta, lechuga y papas a la francesa.'},
+            {name: 'Picante', price: 25000, desc: 'Carne 1/4 de libra, queso, tomate, cebolla, picante, pimenton, maiz, lechuga y papas a la francesa.'},
+            {name: 'Pollo', price: 20000, desc: 'Pollo 120 gr, queso, tomate, cebolla, lechuga, jamon, arepa y papas a la francesa.'},
+            {name: 'Aliño y Sazon', price: 32000, desc: 'Doble carne, doble queso, tomate, cebolla, pollo filete, maiz dulce, arepa, tocineta y papas a la francesa.'},
+            {name: 'Infantil', price: 18000, desc: 'Carne 50 gr, jamon, queso, tomate, cebolla, lechuga, arepa y papas a la francesa.'}
+        ]
+    },
+    {
+        id: 'quesadillas',
+        label: '🫓 Quesadillas',
+        title: 'Quesadillas',
+        icon: '🫓',
+        iconClass: 'icon-amarillo',
+        cardClass: 'cat-especiales',
+        items: [
+            {name: 'Tradicional', price: 17000, desc: 'Queso crema y costeño, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Carne', price: 25000, desc: 'Carne, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Pollo', price: 25000, desc: 'Pollo, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Mixta', price: 25000, desc: 'Carne, pollo, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Jalisco', price: 25000, desc: 'Pollo apanado, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'}
+        ]
+    },
+    {
+        id: 'burritos',
+        label: '🌯 Burritos',
+        title: 'Burritos',
+        icon: '🌯',
+        iconClass: 'icon-naranja',
+        cardClass: 'cat-daily',
+        items: [
+            {name: 'Carne', price: 25000, desc: 'Carne, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Pollo', price: 25000, desc: 'Pollo, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Jalisco', price: 25000, desc: 'Pollo apanado, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Mixta', price: 25000, desc: 'Carne, pollo, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'}
+        ]
+    },
+    {
+        id: 'tacos',
+        label: '🌮 Tacos',
+        title: 'Tacos',
+        icon: '🌮',
+        iconClass: 'icon-naranja',
+        cardClass: 'cat-daily',
+        items: [
+            {name: 'Pollo', price: 25000, desc: 'Pollo, queso, pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Carne', price: 25000, desc: 'Carne, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'},
+            {name: 'Mixto', price: 25000, desc: 'Carne, pollo, queso, cebolla y pimenton, acompañado de nachos con pico de gallo y guacamole.'}
+        ]
+    },
+    {
+        id: 'parrilla',
+        label: '🔥 Parrilla',
+        title: 'A la Parrilla',
+        icon: '🔥',
+        iconClass: 'icon-rojo',
+        cardClass: 'cat-corrientes',
+        items: [
+            {name: 'Lomo de Cerdo BBQ', price: 37000, desc: 'Acompañada con papa a la francesa.'},
+            {name: 'Pechuga al BBQ 300 gs', price: 37000, desc: 'Acompañada con papa a la francesa.'},
+            {name: 'Churrasco', price: 37000, desc: 'Acompañada con papa a la francesa y arepa.'},
+            {name: 'Costillas de Cerdo', price: 25000, desc: 'Costilla BBQ, pico de gallo, guacamole y papas a la francesa.'},
+            {name: 'Medias Carnes Especiales', price: 20000, desc: 'Carne o lomo de cerdo o pollo, acompañado de papas a la francesa.'},
+            {name: 'Picada (3 personas)', price: 86000, desc: 'Carne de cerdo, res y pollo, papa a la francesa.'},
+            {name: 'Picada (2 personas)', price: 60000, desc: 'Carne de cerdo, res y pollo, papa a la francesa.'},
+            {name: 'Picada Personal', price: 30000, desc: 'Carne de cerdo, res y pollo, papa a la francesa.'},
+            {name: 'Maizada', price: 25000, desc: 'Carne y pollo, maiz dulce, queso crema, pimenton, cebolla, acompañado con papa a la francesa.'}
+        ]
+    },
+    {
+        id: 'perros',
+        label: '🌭 Perros',
+        title: 'Perros',
+        icon: '🌭',
+        iconClass: 'icon-rojo',
+        cardClass: 'cat-corrientes',
+        items: [
+            {name: 'Americano', price: 18000, desc: 'Salchicha, queso, salsas, cebolla, jamon, papa picada y papas a la francesa.'},
+            {name: 'Choriperro', price: 20000, desc: 'Chorizo, queso, salsas, cebolla, jamon, papa picada y papas a la francesa.'},
+            {name: 'Perro Mixto', price: 25000, desc: 'Salchicha, queso, salsas, cebolla, jamon, trozos de pollo, carne en cuadros, papa picada y papas a la francesa.'}
+        ]
+    },
+    {
+        id: 'sandwich',
+        label: '🥪 Sandwich',
+        title: 'Sandwich',
+        icon: '🥪',
+        iconClass: 'icon-amarillo',
+        cardClass: 'cat-especiales',
+        items: [
+            {name: 'Clasico', price: 18000, desc: 'Jamon, queso, lechuga, tomate, mayonesa y papas a la francesa.'},
+            {name: 'Pollo', price: 20000, desc: 'Pollo, queso, tocineta, cebolla, tomate, mostaza, lechuga, crema de leche y papas a la francesa.'},
+            {name: 'Hawaiano', price: 22000, desc: 'Jamon, queso, piña, lechuga y crema de leche y papas a la francesa.'},
+            {name: 'Chido', price: 22000, desc: 'Trocitos de pollo, huevo frito, queso, jamon, tomate, lechuga, mayonesa y papas a la francesa.'}
+        ]
+    },
+    {
+        id: 'papas',
+        label: '🍟 Zona Papas',
+        title: 'Zona Papas',
+        icon: '🍟',
+        iconClass: 'icon-naranja',
+        cardClass: 'cat-daily',
+        items: [
+            {name: 'Porcion de Papas', price: 12000, desc: 'Papas a la francesa.'},
+            {name: 'Salchipapa', price: 16000, desc: 'Bandeja de papas con salchicha y salsas.'},
+            {name: 'Choripapa', price: 16000, desc: 'Bandeja de papas con chorizo y salsas.'}
+        ]
+    },
+    {
+        id: 'adicionales',
+        label: '➕ Adicionales',
+        title: 'Adicionales',
+        icon: '➕',
+        iconClass: 'icon-verde',
+        cardClass: 'cat-adicionales',
+        items: [
+            {name: 'Guacamole', price: 5000, desc: 'Adicion para acompañar.'},
+            {name: 'Pollo', price: 7000, desc: 'Adicion de pollo.'},
+            {name: 'Carne', price: 7000, desc: 'Adicion de carne.'},
+            {name: 'Nachos', price: 4000, desc: 'Adicion de nachos.'},
+            {name: 'Milanesa', price: 7000, desc: 'Adicion de milanesa.'}
+        ]
+    },
+    {
+        id: 'bebidas',
+        label: '🥤 Bebidas',
+        title: 'Bebidas',
+        icon: '🥤',
+        iconClass: 'icon-azul',
+        cardClass: 'cat-bebidas',
+        items: [
+            {name: 'Jugos o Granizadas', price: 9000, desc: 'Bebida fria de la casa.'},
+            {name: 'Jugo Hit', price: 3500, desc: 'Bebida embotellada.'},
+            {name: 'Mr. Tea', price: 3500, desc: 'Bebida embotellada.'},
+            {name: 'Gaseosa Personal', price: 3500, desc: 'Gaseosa personal.'},
+            {name: 'Gaseosa Litron', price: 6000, desc: 'Gaseosa litron.'},
+            {name: 'Gaseosa 2 y 1/2', price: 12000, desc: 'Gaseosa dos litros y medio.'},
+            {name: 'Cola y Pola', price: 4000, desc: 'Bebida en botella.'},
+            {name: 'Cerveza', price: 4000, desc: 'Bebida en botella.'},
+            {name: 'Michelada', price: 7000, desc: 'Bebida preparada.'},
+            {name: 'Botella de Agua', price: 3000, desc: 'Agua en botella.'}
+        ]
+    }
+];
+
 // Pega aquí la configuración de tu app web de Firebase cuando la tengas.
 // Mientras estos campos estén vacíos, la página seguirá funcionando solo en este dispositivo.
 const firebaseConfig = {
@@ -844,6 +1164,7 @@ const firebaseState = {
 
 let menuItems = [];
 let dailySel = {principios: [], sopa: null};
+let menuModeOverride = 'auto';
 
 const fmt = new Intl.NumberFormat('es-CO', {
     style: 'currency',
@@ -862,6 +1183,15 @@ const escapeHtml = value => String(value).replace(/[&<>"']/g, char => ({
 
 const fP = price => price === 0 ? '' : fmt.format(price);
 const menuRow = (name, price) => `<div class="menu-item"><span class="item-name">${escapeHtml(name)}</span>${price ? `<span class="item-price">${fP(price)}</span>` : ''}</div>`;
+const menuRowWithDesc = item => `
+    <div class="menu-item has-description">
+        <span class="item-main">
+            <span class="item-name">${escapeHtml(item.name)}</span>
+            <span class="item-desc">${escapeHtml(item.desc)}</span>
+        </span>
+        <span class="item-price">${fP(item.price)}</span>
+    </div>
+`;
 const emptyMsg = text => `<p class="empty-msg">${escapeHtml(text)}</p>`;
 
 function setHtml(id, html) {
@@ -875,6 +1205,7 @@ function initMenu() {
     try {
         const savedItems = localStorage.getItem('alinoMenu3');
         const savedDaily = localStorage.getItem('alinoSel3');
+        const savedMode = localStorage.getItem('alinoMenuModeOverride');
 
         if (savedItems) {
             const parsed = JSON.parse(savedItems);
@@ -891,6 +1222,10 @@ function initMenu() {
                 sopa: parsedDaily.sopa || null
             };
         }
+
+        if (['auto', 'day', 'night'].includes(savedMode)) {
+            menuModeOverride = savedMode;
+        }
     } catch (error) {
         console.warn('No se pudo cargar la configuración guardada.', error);
     }
@@ -905,6 +1240,7 @@ function saveLocal() {
     try {
         localStorage.setItem('alinoMenu3', JSON.stringify(menuItems));
         localStorage.setItem('alinoSel3', JSON.stringify(dailySel));
+        localStorage.setItem('alinoMenuModeOverride', menuModeOverride);
     } catch (error) {
         console.warn('No se pudo guardar la configuración.', error);
     }
@@ -924,6 +1260,7 @@ function getCloudState() {
             principios: [...dailySel.principios],
             sopa: dailySel.sopa
         },
+        menuModeOverride,
         updatedAt: firebaseState.serverTimestamp ? firebaseState.serverTimestamp() : new Date().toISOString()
     };
 }
@@ -947,8 +1284,14 @@ function applyCloudState(data) {
         };
     }
 
+    if (['auto', 'day', 'night'].includes(data.menuModeOverride)) {
+        menuModeOverride = data.menuModeOverride;
+    }
+
     saveLocal();
+    applyMenuSchedule();
     renderMenu();
+    renderModeControls();
     renderAdmin();
 
     firebaseState.applyingRemote = false;
@@ -1022,6 +1365,31 @@ function renderMenu() {
 
     const bebidas = active.filter(item => item.category === 'bebidas');
     setHtml('bebidasList', bebidas.length ? bebidas.map(item => menuRow(item.name, item.price)).join('') : emptyMsg('No hay bebidas.'));
+}
+
+function renderNightMenu() {
+    const tabs = nightSections.map((section, index) => `
+        <button class="tab-btn ${index === 0 ? 'active' : ''}" data-tab="night-${section.id}">
+            ${escapeHtml(section.label)}
+        </button>
+    `).join('');
+
+    const panels = nightSections.map((section, index) => `
+        <div class="tab-panel ${index === 0 ? 'active' : ''}" id="tab-night-${section.id}">
+            <div class="menu-card night-only-card ${section.cardClass}">
+                <div class="card-header">
+                    <div class="card-icon ${section.iconClass}">${escapeHtml(section.icon)}</div>
+                    <div class="card-title">${escapeHtml(section.title)}</div>
+                </div>
+                <div class="card-body">
+                    <div class="two-col">${section.items.map(menuRowWithDesc).join('')}</div>
+                </div>
+            </div>
+        </div>
+    `).join('');
+
+    setHtml('nightTabs', tabs);
+    setHtml('nightPanels', panels);
 }
 
 function renderAdmin() {
@@ -1107,25 +1475,93 @@ function toggleItem(cb) {
     renderAdmin();
 }
 
+function isAutomaticNightMenu() {
+    const hour = new Date().getHours();
+    return hour >= 17 && hour < 24;
+}
+
+function isNightMenuActive() {
+    if (menuModeOverride === 'night') return true;
+    if (menuModeOverride === 'day') return false;
+    return isAutomaticNightMenu();
+}
+
+function renderModeControls() {
+    const statusLabel = document.getElementById('modeStatusLabel');
+    const statusText = document.getElementById('modeStatusText');
+    const toggleBtn = document.getElementById('modeToggleBtn');
+    const autoBtn = document.getElementById('modeAutoBtn');
+    if (!statusLabel || !statusText || !toggleBtn || !autoBtn) return;
+
+    const nightActive = isNightMenuActive();
+    const forced = menuModeOverride !== 'auto';
+
+    statusLabel.textContent = forced ? 'Modo manual' : 'Horario automático';
+    statusText.textContent = nightActive
+        ? 'Ahora se está mostrando la carta de comidas rápidas.'
+        : 'Ahora se está mostrando el menú de día.';
+    toggleBtn.textContent = nightActive ? 'Desactivar comidas rápidas' : 'Activar comidas rápidas';
+    toggleBtn.classList.toggle('btn-rojo', !nightActive);
+    toggleBtn.classList.toggle('btn-verde', nightActive);
+    autoBtn.classList.toggle('hidden', !forced);
+}
+
+function setMenuModeOverride(mode) {
+    menuModeOverride = mode;
+    save();
+    applyMenuSchedule();
+    renderModeControls();
+}
+
 function showView(id) {
-    ['customerView','adminView'].forEach(view => document.getElementById(view).classList.add('hidden'));
+    ['customerView','nightCustomerView','adminView'].forEach(view => document.getElementById(view).classList.add('hidden'));
     document.getElementById(id).classList.remove('hidden');
 }
 
-document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
-        document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
-        btn.classList.add('active');
-        document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+function getCustomerViewId() {
+    return document.body.classList.contains('night-menu') ? 'nightCustomerView' : 'customerView';
+}
+
+function setupTabs() {
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const panel = document.getElementById(`tab-${btn.dataset.tab}`);
+            if (!panel) return;
+
+            const view = btn.closest('#customerView, #nightCustomerView');
+            if (!view) return;
+
+            view.querySelectorAll('.tab-btn').forEach(tab => tab.classList.remove('active'));
+            view.querySelectorAll('.tab-panel').forEach(tabPanel => tabPanel.classList.remove('active'));
+            btn.classList.add('active');
+            panel.classList.add('active');
+        });
     });
-});
+}
+
+function applyMenuSchedule() {
+    const isNightMenu = isNightMenuActive();
+
+    document.body.classList.toggle('night-menu', isNightMenu);
+    document.body.classList.toggle('day-menu', !isNightMenu);
+    document.body.dataset.menuMode = isNightMenu ? 'nocturno' : 'diurno';
+
+    const customerVisible = !document.getElementById('customerView').classList.contains('hidden');
+    const nightVisible = !document.getElementById('nightCustomerView').classList.contains('hidden');
+    if (customerVisible || nightVisible) showView(getCustomerViewId());
+    renderModeControls();
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     initMenu();
+    applyMenuSchedule();
+    setInterval(applyMenuSchedule, 60000);
+
     renderMenu();
+    renderNightMenu();
+    setupTabs();
     renderAdmin();
-    showView('customerView');
+    showView(getCustomerViewId());
     initFirebaseSync();
 
     const PASS = 'fabniño';
@@ -1135,6 +1571,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const submitEl = document.getElementById('submitPasswordBtn');
     const adminBtn = document.getElementById('showAdminBtn');
     const menuBtn = document.getElementById('showMenuBtn');
+    const modeToggleBtn = document.getElementById('modeToggleBtn');
+    const modeAutoBtn = document.getElementById('modeAutoBtn');
 
     adminBtn.addEventListener('click', () => {
         showView('adminView');
@@ -1143,9 +1581,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     menuBtn.addEventListener('click', () => {
-        showView('customerView');
+        showView(getCustomerViewId());
         menuBtn.classList.add('hidden');
         adminBtn.classList.remove('hidden');
+    });
+
+    modeToggleBtn.addEventListener('click', () => {
+        setMenuModeOverride(isNightMenuActive() ? 'day' : 'night');
+    });
+
+    modeAutoBtn.addEventListener('click', () => {
+        setMenuModeOverride('auto');
     });
 
     loginEl.addEventListener('click', () => {
